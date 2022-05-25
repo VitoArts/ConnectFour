@@ -1,21 +1,21 @@
 #Connect four has 7 columns (Horizontal) and 6 rows (Vertical)
-column_1 = ['#', '#', '#', '#', '#', '#']
-column_2 = ['#', '#', '#', '#', '#', '#']
-column_3 = ['#', '#', '#', '#', '#', '#']
-column_4 = ['#', '#', '#', '#', '#', '#']
-column_5 = ['#', '#', '#', '#', '#', '#']
-column_6 = ['#', '#', '#', '#', '#', '#']
-column_7 = ['#', '#', '#', '#', '#', '#']
-board = [column_1, column_2, column_3, column_4, column_5, column_6, column_7]
+row_1 = ['#', '#', '#', '#', '#', '#', '#']
+row_2 = ['#', '#', '#', '#', '#', '#', '#']
+row_3 = ['#', '#', '#', '#', '#', '#', '#']
+row_4 = ['#', '#', '#', '#', '#', '#', '#']
+row_5 = ['#', '#', '#', '#', '#', '#', '#']
+row_6 = ['#', '#', '#', '#', '#', '#', '#']
+board = [row_1, row_2, row_3, row_4, row_5, row_6]
 game_state = 'play'
 player_turn = 1
 
 def print_board():
     print("This is the current board: ")
-    for column in board:
-        print(column)
+    for row in board:
+        print(row)
 
-def check_for_victory(drop_location, player_turn):
+#horizontal
+def check_for_victory(drop_location):
     return False
 
 if __name__ == '__main__':
@@ -25,14 +25,14 @@ if __name__ == '__main__':
         print("It's player " + str(player_turn) +"'s turn")
         dropped_state = 'false'
         drop_location = input("Enter the row you'd like to drop (int from 1-7): ")
-        for column in reversed(board):
-            if column[int(drop_location)-1] == '#':
+        for row in reversed(board):
+            if row[int(drop_location)-1] == '#':
                 if player_turn == 1:
-                    column[int(drop_location)-1] = '0'
+                    row[int(drop_location)-1] = '0'
                     dropped_state = 'true'
                     break
                 elif player_turn == 2:
-                    column[int(drop_location) - 1] = 'X'
+                    row[int(drop_location) - 1] = 'X'
                     dropped_state = 'true'
                     break
 
@@ -41,7 +41,7 @@ if __name__ == '__main__':
             print("Can't drop in this column. It's already full")
             player_turn -= 1
 
-        if check_for_victory(drop_location, player_turn):
+        if check_for_victory(drop_location):
             print ("Game over. Player " + str(player_turn) + " wins")
             game_state = 'stop'
 
