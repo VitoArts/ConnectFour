@@ -42,7 +42,7 @@ if __name__ == '__main__':
             player_turn -= 1
 
         if check_for_victory(drop_location, player_turn):
-            print ("Game over. Player " + player_turn + " wins")
+            print ("Game over. Player " + str(player_turn) + " wins")
             game_state = 'stop'
 
         #Player turn assignment
