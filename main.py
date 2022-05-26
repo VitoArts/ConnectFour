@@ -8,14 +8,82 @@ row_6 = ['#', '#', '#', '#', '#', '#', '#']
 board = [row_1, row_2, row_3, row_4, row_5, row_6]
 game_state = 'play'
 player_turn = 1
+drop_list = []
 
 def print_board():
     print("This is the current board: ")
     for row in board:
         print(row)
 
-#horizontal
 def check_for_victory(drop_location):
+    #Declare variables that will be useful
+    column_index = int(drop_location)-1
+    row_index = 6-drop_list.count(drop_location)
+    symbol_chain = 0
+    symbol = '0'
+    if player_turn == 2:
+        symbol = 'X'
+
+    #Vertical check:
+    for row in reversed(board):
+        if symbol_chain > 3:
+            return True
+        if row[column_index] == symbol:
+            symbol_chain+=1
+        else:
+            symbol_chain = 0
+
+    #Horizontal check:
+    for peg in board[row_index]:
+        if symbol_chain > 3:
+            return True
+        if peg == symbol:
+            symbol_chain+=1
+        else:
+            symbol_chain = 0
+
+    # Diagonal check down-up:
+    diagonal_starting_point_x = column_index
+    diagonal_starting_point_y = row_index
+
+    if diagonal_starting_point_y < 5 and diagonal_starting_point_x > 0:
+        while diagonal_starting_point_y < 5 and diagonal_starting_point_x > 0:
+            diagonal_starting_point_y += 1
+            diagonal_starting_point_x -= 1
+
+    while diagonal_starting_point_y >= 0 and diagonal_starting_point_x <= 6:
+        if symbol_chain > 3:
+            return True
+        if board[diagonal_starting_point_y][diagonal_starting_point_x] == symbol:
+            symbol_chain += 1
+        else:
+            symbol_chain = 0
+        diagonal_starting_point_y -= 1
+        diagonal_starting_point_x += 1
+
+    # Diagonal check up-down:
+    diagonal_starting_point_x = column_index
+    diagonal_starting_point_y = row_index
+
+    if diagonal_starting_point_y > 0 and diagonal_starting_point_x > 0:
+        while diagonal_starting_point_y > 0 and diagonal_starting_point_x > 0:
+            diagonal_starting_point_y -= 1
+            diagonal_starting_point_x -= 1
+
+    print(diagonal_starting_point_y)
+    print(diagonal_starting_point_x)
+
+    while diagonal_starting_point_y <= 5 and diagonal_starting_point_x <= 6:
+        if symbol_chain > 3:
+            return True
+        print(diagonal_starting_point_y)
+        print(diagonal_starting_point_x)
+        if board[diagonal_starting_point_y][diagonal_starting_point_x] == symbol:
+            symbol_chain += 1
+        else:
+            symbol_chain = 0
+        diagonal_starting_point_y += 1
+        diagonal_starting_point_x += 1
     return False
 
 if __name__ == '__main__':
@@ -29,10 +97,12 @@ if __name__ == '__main__':
             if row[int(drop_location)-1] == '#':
                 if player_turn == 1:
                     row[int(drop_location)-1] = '0'
+                    drop_list.append(drop_location)
                     dropped_state = 'true'
                     break
                 elif player_turn == 2:
                     row[int(drop_location) - 1] = 'X'
+                    drop_list.append(drop_location)
                     dropped_state = 'true'
                     break
 
@@ -42,7 +112,8 @@ if __name__ == '__main__':
             player_turn -= 1
 
         if check_for_victory(drop_location):
-            print ("Game over. Player " + str(player_turn) + " wins")
+            print_board()
+            print("Game over. Player " + str(player_turn) + " wins")
             game_state = 'stop'
 
         #Player turn assignment
